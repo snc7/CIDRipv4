@@ -1,0 +1,32 @@
+import ipaddress
+
+def calculate_subnet_details(cidr: str):
+    try:
+        if ":" in cidr:
+            network = ipaddress.IPv6Network(cidr, strict=False)
+            hosts = list(network.hosts())
+            print("\nIPv6 Subnet Details:")
+        else:
+            network = ipaddress.IPv4Network(cidr, strict=False)
+            hosts = list(network.hosts())
+            print("\nIPv4 Subnet Details:")
+
+        print(f"Network Address: {network.network_address}")
+        print(f"Prefix Length: {network.prefixlen}")
+        print(f"Subnet Mask: {network.netmask}")
+        print(f"First Usable IP: {hosts[0] if hosts else 'N/A'}")
+        print(f"Last Usable IP: {hosts[-1] if hosts else 'N/A'}")
+        print(f"Total Usable Hosts: {len(hosts)}")
+    except ValueError as e:
+        print(f"Error: {e}")
+
+def main():
+    while True:
+        cidr_input = input("Enter IPv4/IPv6 CIDR notation (e.g., 192.168.1.0/24 or 2001:db8::/64) or 'exit' to quit: ")
+        if cidr_input.lower() == 'exit':
+            print("Exiting...")
+            break
+        calculate_subnet_details(cidr_input)
+
+if __name__ == "__main__":
+    main()
